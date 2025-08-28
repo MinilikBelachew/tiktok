@@ -50,7 +50,7 @@ app.use(
     // origin: process.env.FRONTEND_URL || "https://bet-tiktok.vercel.app",
     origin: [
       
-      "https://tiktok-beta-lovat.vercel.app"
+      "https://gregarious-travesseiro-9cc07c.netlify.app"
 
     ],
     credentials: true,
