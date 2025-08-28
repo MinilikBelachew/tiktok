@@ -6,9 +6,6 @@ import {
   fetchMarketsFailure,
 } from "../slice/market";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL;
-//const API_BASE_URL = 'http://localhost:3000';
-
 function* fetchMarketsSaga(): Generator<any, void, any> {
   try {
     const response = yield call(apiClient.get, `api/admin/markets/market/open`);

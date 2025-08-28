@@ -207,21 +207,6 @@ const ResolveMarketPage: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString();
-  };
-
-  const getBetCountByOutcome = (marketId: number, outcome: string) => {
-    const bets = betsByMarket[marketId] || [];
-    return bets.filter(bet => bet.outcome === outcome).length;
-  };
-
   const getTotalBetAmountByOutcome = (marketId: number, outcome: string) => {
     const bets = betsByMarket[marketId] || [];
     return bets

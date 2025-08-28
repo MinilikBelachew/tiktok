@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { useSubTabNavigation } from '../../hooks/useSubTabNavigation';
 import { CreateMarketPage, ResolveMarketPage, EditActiveDeactivatePage } from './markets';

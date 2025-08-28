@@ -13,8 +13,6 @@ import {
 } from "../slice/profile";
 import { updateUserData } from "../slice/auth";
 
-//const API_BASE_URL = 'http://localhost:3000';
-const API_BASE_URL = import.meta.env.VITE_API_URL;
 //axios.defaults.withCredentials = true; // This line is removed as per the new_code
 
 function* getProfileSaga(): Generator<any, void, any> {

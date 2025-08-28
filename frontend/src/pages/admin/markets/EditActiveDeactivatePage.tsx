@@ -255,16 +255,6 @@ const EditActiveDeactivatePage: React.FC = () => {
     }
   };
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
-  };
-
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString();
-  };
-
   const getTimeRemaining = (endTime: string | null) => {
     if (!endTime) return 'N/A';
     const now = new Date();

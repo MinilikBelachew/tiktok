@@ -64,11 +64,6 @@ const SettledMarketsPage: React.FC = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
-  const formatDateTime = (dateString: string | null) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString();
-  };
-
   const formatEndTime = (endTime: string) => {
     const end = new Date(endTime);
     const now = new Date();

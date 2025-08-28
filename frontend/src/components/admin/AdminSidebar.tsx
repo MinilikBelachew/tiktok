@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface AdminSidebarProps {
@@ -9,7 +9,6 @@ interface AdminSidebarProps {
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, activeSubTab, onSubTabChange }) => {
   const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const navigationItems = [
     {
@@ -81,7 +80,6 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, activeSubTab, on
 
   const handleNavigation = (href: string) => {
     navigate(href);
-    setIsMobileMenuOpen(false);
   };
 
   const handleSubTabClick = (subTabId: string) => {
