@@ -8,7 +8,6 @@ import marketRoutes from "./routes/market.js";
 import betRoutes from "./routes/bets.js";
 // import walletRoutes from "./routes/wallet.js";
 import paymentRoutes from "./routes/payment.js";
-import telebirrRoutes from "./routes/telebirr.js"
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -51,7 +50,8 @@ app.use(
     // origin: process.env.FRONTEND_URL || "https://bet-tiktok.vercel.app",
     origin: [
       "http://localhost:5173",
-      "https://bet-tiktok.vercel.app"
+      "https://bet-tiktok.vercel.app",
+      "https://tiktok-beta-lovat.vercel.app"
 
     ],
     credentials: true,
@@ -99,8 +99,6 @@ app.use("/api/admin/markets", marketRoutes);
 app.use("/api/admin/bets", betRoutes);
 // app.use("/api/wallet", walletRoutes);
 app.use("/api/payments", paymentRoutes);
-// app.use("/api/telebirr", telebirrRoutes);
-
 
 
 app.use(
