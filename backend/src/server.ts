@@ -49,8 +49,7 @@ app.use(
   cors({
     // origin: process.env.FRONTEND_URL || "https://bet-tiktok.vercel.app",
     origin: [
-      "http://localhost:5173",
-      "https://bet-tiktok.vercel.app",
+      
       "https://tiktok-beta-lovat.vercel.app"
 
     ],
