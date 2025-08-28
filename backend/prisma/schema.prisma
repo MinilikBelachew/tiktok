@@ -1,0 +1,232 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int       @id @default(autoincrement())
+  username         String    @unique @db.VarChar(50)
+  firstName        String?   @db.VarChar(50)
+  lastName         String?   @db.VarChar(50)
+  bio              String?   @db.Text
+  email            String    @unique @db.VarChar(255)
+  password         String    @db.VarChar(255)
+  phone            String    @unique @db.VarChar(20)
+  resetToken       String?   @db.VarChar(255)
+  resetTokenExpiry DateTime?
+  role             UserRole  @default(USER)
+  balance          Decimal   @default(0.00) @db.Decimal(10, 2)
+
+  avatarUrl    String?        @db.Text
+  isSuspended  Boolean        @default(false)
+  lastLogin    DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  bets         Bet[]
+  transactions Transaction[]
+  activities   UserActivity[]
+  Market       Market[]
+  comments     Comment[]
+  commentLikes CommentLike[]
+
+  payments    Payment[]
+  withdrawals Withdrawal[]
+
+  @@index([email])
+}
+
+model Market {
+  id                Int          @id @default(autoincrement())
+  title             String       @db.VarChar(100)
+  participants      String[]     @db.VarChar(100)
+  participantImages String?
+  odds              Json?
+  status            MarketStatus @default(OPEN)
+  startTime         DateTime?
+  endTime           DateTime?
+  calendar          DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  bets              Bet[]
+  createdById       Int?
+  createdBy         User?        @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  resolvedOutcome   String?
+  comments          Comment[]
+
+  @@index([status])
+}
+
+model Bet {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  marketId  Int
+  amount    Decimal  @db.Decimal(10, 2)
+  outcome   String   @db.VarChar(100)
+  status    String   @default("pending") @db.VarChar(20)
+  version   Int      @default(0)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  market    Market   @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  payout    Decimal? @db.Decimal(10, 2)
+
+  @@index([userId])
+  @@index([marketId])
+}
+
+model Transaction {
+  id                Int      @id @default(autoincrement())
+  userId            Int
+  type              String   @db.VarChar(20)
+  amount            Decimal  @db.Decimal(10, 2)
+  status            String   @default("pending") @db.VarChar(20)
+  description       String?  @db.VarChar(255)
+  currency          String   @default("USD") @db.VarChar(3)
+  transactionStatus String   @default("pending") @db.VarChar(20)
+  referenceId       String?  @db.VarChar(100)
+  createdAt         DateTime @default(now())
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserActivity {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  action     String    @db.VarChar(100)
+  details    Json
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress  String?   @db.VarChar(45)
+  userAgent  String?   @db.Text
+  location   String?   @db.VarChar(100)
+  deviceType String?   @db.VarChar(100)
+  timestamp  DateTime? @default(now())
+
+  @@index([userId])
+}
+
+model Comment {
+  id        Int    @id @default(autoincrement())
+  userId    Int
+  marketId  Int
+  content   String @db.Text
+  likeCount Int    @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  market    Market?       @relation(fields: [marketId], references: [id], onDelete: Cascade)
+  likes     CommentLike[]
+
+  @@index([userId])
+  @@index([marketId])
+}
+
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  commentId Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+}
+
+// New Payment model for Chapa integration
+model Payment {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  amount        Decimal       @db.Decimal(10, 2)
+  currency      String        @default("ETB") @db.VarChar(3)
+  txRef         String        @unique @db.VarChar(100)
+  status        PaymentStatus @default(PENDING)
+  type          PaymentType   @default(DEPOSIT)
+  phone         String        @db.VarChar(20)
+  chapaResponse Json? // Store Chapa API response
+  checkoutUrl   String?       @db.Text
+  verifiedAt    DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([txRef])
+  @@index([status])
+  @@index([type])
+}
+
+// New Withdrawal model
+model Withdrawal {
+  id            Int              @id @default(autoincrement())
+  userId        Int
+  amount        Decimal          @db.Decimal(10, 2)
+  currency      String           @default("ETB") @db.VarChar(3)
+  status        WithdrawalStatus @default(PENDING)
+  type          WithdrawalType   @default(BANK_TRANSFER)
+  bankName      String?          @db.VarChar(100)
+  accountNumber String?          @db.VarChar(50)
+  accountName   String?          @db.VarChar(100)
+  swiftCode     String?          @db.VarChar(20)
+  routingNumber String?          @db.VarChar(20)
+
+  reference   String?   @db.VarChar(100)
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum MarketStatus {
+  OPEN
+  CLOSED
+  SETTLED
+  CANCELLED
+  UPCOMING
+}
+
+// New enums for payment system
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum PaymentType {
+  DEPOSIT
+  BET_PLACEMENT
+  BET_WINNING
+}
+
+enum WithdrawalStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum WithdrawalType {
+  BANK_TRANSFER
+  MOBILE_MONEY
+  CARD
+}

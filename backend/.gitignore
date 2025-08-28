@@ -1,0 +1,13 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/controllers/admin/wallets.ts
+
+
+/src/routes/wallets.ts
+/src/routes/wallet.ts
+
+/src/controllers/telebirr.ts
+/src/routes/telebirr.ts
+../backend.zip

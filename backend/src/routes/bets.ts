@@ -1,0 +1,16 @@
+import { Router } from 'express';
+import { adminOnly, authenticate } from '../middlewares/authorize.js';
+import { createBet, getAllBets, getBetById, getBetsByUserId, getBetsMyMarketId, getTotalBet, getTotalUser, resolveMarket } from '../controllers/admin/bets.js';
+
+const router = Router();
+
+router.post('/create', authenticate, createBet);
+router.get('/user/:userId', authenticate, getBetsByUserId); 
+router.get("/allbets", authenticate, adminOnly, getAllBets);
+router.get("/totaluser", authenticate, adminOnly, getTotalUser);
+router.get("/totalbet/:marketId", authenticate, getTotalBet);
+router.get('/bet/:marketId', authenticate, getBetsMyMarketId);
+router.put('/resolve/:marketId', authenticate, adminOnly, resolveMarket);
+// router.get('/betbyid/:id', authenticate, adminOnly, getBetById);
+
+export default router;

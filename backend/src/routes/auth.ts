@@ -1,0 +1,34 @@
+import { Router } from "express";
+
+import {
+  RegisterUser,
+  loginUser,
+  logoutUser,
+  resetPassword,
+  requestPasswordReset,
+  checkAuthStatus,
+} from "../controllers/auth.js";
+import validate from "../middlewares/validate.js";
+import {
+  LoginUserSchema,
+  RegisterUserSchema,
+  RequestPasswordResetSchema,
+  ResetPasswordSchema,
+} from "../utils/zod.js";
+
+
+const router = Router();
+
+router.post("/register", validate(RegisterUserSchema), RegisterUser);
+router.post("/login", validate(LoginUserSchema), loginUser);
+router.post("/logout", logoutUser);
+router.get("/check", checkAuthStatus);
+router.post("/reset-password", validate(ResetPasswordSchema), resetPassword);
+router.post(
+  "/request-password-reset",
+  validate(RequestPasswordResetSchema),
+  requestPasswordReset
+);
+
+
+export default router;

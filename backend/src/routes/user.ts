@@ -1,0 +1,49 @@
+import { Router } from "express";
+import { authenticate, adminOnly } from "../middlewares/authorize.js";
+
+import {
+  getMyProfile,
+  updateMyProfile,
+  deleteMyAccount,
+  myBalance,
+  getTotalUser,
+} from "../controllers/user.js";
+import {
+  deleteUser,
+  getAllUsers,
+  getUserActivity,
+  getUserById,
+  suspendUser,
+  updateUser,
+} from "../controllers/admin/users.js";
+import { uploadProfileImage } from "../middlewares/multer.js";
+import cloudinaryUpload from "../middlewares/cloudinary.js";
+
+const router = Router();
+
+router.get("/profile", authenticate, getMyProfile);
+router.put(
+  "/profile",
+  authenticate,
+  uploadProfileImage,
+  cloudinaryUpload,
+  updateMyProfile
+);
+router.delete("/profile", authenticate, deleteMyAccount);
+router.get("/balance", authenticate, myBalance);
+
+//admin routes
+router.get("/admin/users", authenticate, adminOnly, getAllUsers);
+router.put("/admin/users/:id", authenticate, adminOnly, updateUser);
+router.delete("/admin/users/:id", authenticate, adminOnly, deleteUser);
+router.put("/admin/users/:id/suspend", authenticate, adminOnly, suspendUser);
+router.get("/admin/users/:id", authenticate, adminOnly, getUserById);
+router.get(
+  "/admin/users/:id/activity",
+  authenticate,
+  adminOnly,
+  getUserActivity
+);
+router.get("/admin/totaluser", authenticate, getTotalUser)
+
+export default router;

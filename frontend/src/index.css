@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  /* background colors */
+  --color-dark-blue: #1F4068;
+
+  /* button colors */
+  --color-sunrise: #FFC107;
+  --color-cripson: #BD3124;
+  --color-forest-green:#76B729;
+
+
+
+
+  --color-cloud: #FFFFFF;
+
+  /* card colors */
+  --color-porcelain: #F0F2F5;
+  --color-vivid-green: #01F702;
+
+  /* text colors */
+
+  --color-glacier: #92C6FE;
+  --color-siliver-lining:#D5DADE;
+  
+  /* line */
+  --color-red-line:#F94A56;
+}
+
+/* Custom animations */
+@keyframes slide-right-to-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-right-to-left {
+  animation: slide-right-to-left 15s linear infinite;
+}
