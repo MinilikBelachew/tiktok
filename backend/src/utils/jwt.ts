@@ -9,14 +9,14 @@ if (!secret) {
 
 const generateToken = (res, id, role) => {
   const token = jwt.sign({ id, role }, secret, {
-    expiresIn: "24h", // Extended to 24 hours for better development experience
+    expiresIn: "1h",
   });
 
   res.cookie("access_token", token, {
     httpOnly: true,
-    maxAge: 24 * 3600000, // 24 hours in milliseconds
+    maxAge: 3600000,
     secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Use 'lax' in development
+    sameSite: "none",
   });
 };
 
