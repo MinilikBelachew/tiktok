@@ -70,7 +70,7 @@ const initiateDeposit = async (req: Request, res: Response) => {
       tx_ref: txRef,
       callback_url:
         process.env.CHAPA_CALLBACK_URL ||
-        "http://localhost:3000/api/payments/webhook",
+        "https://tiktok-rstl.onrender.com/api/payments/webhook",
       return_url: returnUrl,
       first_name: firstName || "no user",
       last_name: lastName || "no user",
