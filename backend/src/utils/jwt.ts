@@ -13,7 +13,7 @@ const generateToken = (res, id, role) => {
   });
 
   res.cookie("access_token", token, {
-    httpOnly: false,
+    httpOnly: true,
     maxAge: 3600000,
     secure: true,
     sameSite: "none",
