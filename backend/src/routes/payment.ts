@@ -14,6 +14,7 @@ import {
 const router = Router();
 
 router.post("/webhook", handleWebhook);
+router.get("/webhook", handleWebhook);
 router.post("/deposit", authenticate, initiateDeposit);
 router.get("/history", authenticate, getPaymentHistory);
 router.post("/withdraw", authenticate, requestWithdrawal);
