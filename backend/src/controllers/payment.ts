@@ -116,7 +116,12 @@ const handleWebhook = async (req: Request, res: Response) => {
   let responseMessage = "Webhook processed";
 
   try {
-    const { tx_ref, status } = req.body;
+
+
+    const tx_ref=req.body.tx_ref || req.query.trx_ref || req.body.tx_ref
+    const status=req.body.status || req.query.status
+
+    // const { tx_ref, status } = req.body;
 
     // Basic validation
     if (!tx_ref || !status) {
