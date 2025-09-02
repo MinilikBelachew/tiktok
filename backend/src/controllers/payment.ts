@@ -365,20 +365,60 @@ const requestWithdrawal = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(201).json({
-      message: "Withdrawal request submitted successfully",
-      withdrawal: {
-        id: withdrawal.id,
-        amount: withdrawal.amount,
-        type: withdrawal.type,
-        accountName: withdrawal.accountName,
-        bankName: withdrawal.bankName,
-        accountNumber: withdrawal.accountNumber,
-        currency: withdrawal.currency,
-        status: withdrawal.status,
-        createdAt: withdrawal.createdAt,
-      },
-    });
+    // Automatically process the withdrawal
+    try {
+      const processResult = await processWithdrawal(withdrawal.id);
+      
+      if (processResult.success) {
+        return res.status(200).json({
+          message: "Withdrawal processed successfully",
+          withdrawal: {
+            id: withdrawal.id,
+            amount: withdrawal.amount,
+            type: withdrawal.type,
+            accountName: withdrawal.accountName,
+            bankName: withdrawal.bankName,
+            accountNumber: withdrawal.accountNumber,
+            currency: withdrawal.currency,
+            status: "COMPLETED",
+            createdAt: withdrawal.createdAt,
+          },
+        });
+      } else {
+        return res.status(400).json({
+          message: "Withdrawal request submitted but processing failed",
+          withdrawal: {
+            id: withdrawal.id,
+            amount: withdrawal.amount,
+            type: withdrawal.type,
+            accountName: withdrawal.accountName,
+            bankName: withdrawal.bankName,
+            accountNumber: withdrawal.accountNumber,
+            currency: withdrawal.currency,
+            status: "FAILED",
+            createdAt: withdrawal.createdAt,
+          },
+          error: processResult.message,
+        });
+      }
+    } catch (processError: any) {
+      console.error("Auto-processing withdrawal error:", processError);
+      return res.status(201).json({
+        message: "Withdrawal request submitted but processing failed",
+        withdrawal: {
+          id: withdrawal.id,
+          amount: withdrawal.amount,
+          type: withdrawal.type,
+          accountName: withdrawal.accountName,
+          bankName: withdrawal.bankName,
+          accountNumber: withdrawal.accountNumber,
+          currency: withdrawal.currency,
+          status: "FAILED",
+          createdAt: withdrawal.createdAt,
+        },
+        error: processError.message,
+      });
+    }
   } catch (error: any) {
     console.error("Error details:", {
       message: error.message,
