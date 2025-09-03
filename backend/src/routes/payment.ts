@@ -13,8 +13,8 @@ import {
 
 const router = Router();
 
-// router.post("/webhook", handleWebhook);
-router.get("/webhook", handleWebhook);
+router.post("/webhook", handleWebhook);
+router.get("/webhook", handleWebhook); // Fallback for GET requests
 router.post("/deposit", authenticate, initiateDeposit);
 router.get("/history", authenticate, getPaymentHistory);
 router.post("/withdraw", authenticate, requestWithdrawal);
