@@ -13,12 +13,13 @@ import {
 
 const router = Router();
 
-router.post("/webhook", handleWebhook);
-router.get("/webhook", handleWebhook); // Fallback for GET requests
+// router.post("/webhook", handleWebhook);
+ router.get("/webhook", handleWebhook); // allow providers that s
 router.post("/deposit", authenticate, initiateDeposit);
 router.get("/history", authenticate, getPaymentHistory);
 router.post("/withdraw", authenticate, requestWithdrawal);
 router.get("/status/:tx_ref", checkPaymentStatus);
+// Manual processing route kept as fallback option
 router.post("/withdrawals/processes/:id", async (req, res) => {
   try {
     const withdrawalId = parseInt(req.params.id, 10);
