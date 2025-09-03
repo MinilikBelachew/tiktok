@@ -118,7 +118,7 @@ const handleWebhook = async (req: Request, res: Response) => {
   try {
 
 
-    const tx_ref=req.body.tx_ref || req.query.trx_ref || req.body.tx_ref
+    const tx_ref=req.body.tx_ref || req.query.trx_ref || req.query.tx_ref
     const status=req.body.status || req.query.status
 
     // const { tx_ref, status } = req.body;
