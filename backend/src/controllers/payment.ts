@@ -531,7 +531,7 @@ const processWithdrawal = async (withdrawalId: number) => {
       account_number: withdrawal.accountNumber,
       amount: withdrawal.amount.toString(),
       currency: withdrawal.currency || "ETB",
-      reference: "3241342142sfdd",
+      reference: tx_ref,
       bank_code: 656,
     };
 
