@@ -112,6 +112,10 @@ const loginUser = async (req: Request, res: Response) => {
         createdAt: new Date(),
       },
     });
+   await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLogin: new Date() },
+    });
     const token = generateToken(res, user.id, user.role);
     res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
