@@ -29,6 +29,9 @@ const getAllUsers = async (req: Request, res: Response) => {
       select: {
         id: true,
         email: true,
+        lastLogin:true,
+        activities: true,
+        role:true,
         phone: true,
         username: true,
         isSuspended: true,
