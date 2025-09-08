@@ -29,11 +29,26 @@ const getAllUsers = async (req: Request, res: Response) => {
       select: {
         id: true,
         email: true,
-        lastLogin:true,
-        activities: true,
-        role:true,
         phone: true,
+        balance: true,
+        bio:true,
+        lastLogin:true,
+        role:true,
         username: true,
+        activities: {
+          select: {
+            action: true,
+            location: true,
+            deviceType: true,
+            timestamp: true,
+            ipAddress: true,
+            userAgent: true,
+            details: true
+          },
+          orderBy: {
+            timestamp: 'desc'
+          }
+        },
         isSuspended: true,
         createdAt: true,
         updatedAt: true,
