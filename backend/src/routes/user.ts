@@ -40,6 +40,7 @@ router.put("/admin/users/:id/suspend", authenticate, adminOnly, suspendUser);
 router.get("/admin/users/:id", authenticate, adminOnly, getUserById);
 router.get(
   "/admin/users/:id/activity",
+  
   authenticate,
   adminOnly,
   getUserActivity
